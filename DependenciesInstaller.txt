@@ -1,0 +1,13 @@
+public class DependenciesInstaller : IInstaller
+   {
+       /// <summary>
+       /// Method to install dependency services
+       /// <param name="services">Service object for which services will be added</param>
+       /// <param name="configuration">Configuration object from which configurations can be accessed</param>
+       /// </summary>
+       public void InstallServices(IServiceCollection services, IConfiguration configuration)
+       {
+           services.ConfigureDependencies();
+       }
+   }
+
