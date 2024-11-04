@@ -1,0 +1,22 @@
+public static class InstallerExtensions
+   {
+       /// <summary>
+       /// Initilize all installers from assembly.
+       /// </summary>
+       public static void InstallServicesInAssembly(this IServiceCollection services, IConfiguration configuration)
+       {
+
+
+           var installers = typeof(Program).Assembly.ExportedTypes.Where(x =>
+           typeof(IInstaller).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).Select(Activator.CreateInstance).Cast<IInstaller>().ToList();
+
+
+           var coreInstallers = typeof(MicroserviceCoreLib.Installers.IInstaller).Assembly.ExportedTypes.Where(x =>
+           typeof(IInstaller).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).Select(Activator.CreateInstance).Cast<IInstaller>().ToList();
+
+
+           installers.ForEach(installer => installer.InstallServices(services, configuration));
+           coreInstallers.ForEach(installer => installer.InstallServices(services, configuration));
+       }
+   }
+
